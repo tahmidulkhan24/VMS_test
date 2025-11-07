@@ -97,7 +97,7 @@
   <?php include('book_history.php'); ?>
 
   <!-- ✅ SweetAlert for success message -->
-  <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+  
   <script>
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('msg') === 'booking_success') {
