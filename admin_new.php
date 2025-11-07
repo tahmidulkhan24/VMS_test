@@ -11,36 +11,8 @@
     transition: transform 0.3s, box-shadow 0.3s;
 }
 </style>
-<!--Navbar Modified -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Admin</title>
-    <!--icon-->
-    <link rel="icon" type="image/png" href="img/icon4.png">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-   <nav class="navbar navbar-expand-lg theme-bg bg-color">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="img/logo.png" alt="logo" class="img-fluid me-2" style="max-height:50px;">
-    </a>
-    <div>
-      <div>
-      </div>
-    </div>
-  </div>
-</nav>
 
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-<!--Navbar Modified End-->
+<?php include('admin_navbar.php'); ?>
 
 <body class="bg-light">
 
