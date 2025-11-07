@@ -14,10 +14,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --theme-main: #224071;          /* Primary accent */
+      --theme-light: #153153;         /* Sidebar background */
+      --theme-dark: #1b5870;          /* Hover tone */
+      --theme-text: #0f172a;          /* Main text color */
+      --theme-bg: #eff0f7;            /* Base background */
+      --theme-shadow: rgba(12, 188, 242, 0.25);
+      --white: #ffffff;
+      --black: #000000;
+    }
+
     body {
       margin: 0;
-      background-color: #f8fafc;
+      background-color: var(--theme-bg);
       font-family: 'Poppins', sans-serif;
+      color: var(--theme-text);
     }
 
     .admin-wrapper {
@@ -29,14 +41,15 @@
     /* Sidebar */
     .sidebar {
       width: 250px;
-      background-color: #fff;
-      border-right: 1px solid #e5e7eb;
+      background-color: var(--theme-light);
+      border-right: 1px solid rgba(255,255,255,0.1);
       position: sticky;
       top: 0;
       height: 100vh;
       flex-shrink: 0;
       transition: width 0.3s ease;
       z-index: 1000;
+      box-shadow: 2px 0 8px var(--theme-shadow);
     }
 
     .sidebar.collapsed {
@@ -48,19 +61,19 @@
       align-items: center;
       justify-content: center;
       height: 70px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
       overflow: hidden;
-      position: relative;
+      background: var(--white);
     }
 
     .sidebar-header img {
-      max-height: 40px;
+      max-height: 45px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
     .sidebar.collapsed .sidebar-header img {
-      transform: scale(0.8);
-      opacity: 0.9;
+      transform: scale(0.6);
+      opacity: 1;
     }
 
     /* Sidebar Menu */
@@ -71,30 +84,31 @@
     }
 
     .sidebar-menu li {
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
     .sidebar-menu a {
       display: flex;
       align-items: center;
-      color: #374151;
+      color: var(--white);
       text-decoration: none;
       padding: 12px 20px;
       transition: all 0.2s ease;
       white-space: nowrap;
       font-weight: 500;
+      font-size: 0.95rem;
     }
 
     .sidebar-menu a.active {
-      background-color: #e0e7ff;
-      color: #1e40af;
+      background-color: var(--theme-dark);
+      color: var(--white);
       font-weight: 600;
-      box-shadow: inset 4px 0 #2563eb;
+      box-shadow: inset 4px 0 var(--white);
     }
 
     .sidebar-menu a:hover {
-      background-color: #f1f5f9;
-      color: #2563eb;
+      background-color: var(--theme-main);
+      color: var(--white);
     }
 
     .sidebar-menu a i {
@@ -102,7 +116,7 @@
       font-size: 1.3rem;
       min-width: 30px;
       text-align: center;
-      color: #64748b;
+      color: #cbd5e1;
     }
 
     .sidebar.collapsed .sidebar-menu a span {
@@ -120,36 +134,20 @@
     .top-navbar {
       position: sticky;
       top: 0;
-      background-color: #fff;
-      border-bottom: 1px solid #e5e7eb;
+      background-color: var(--white);
       height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 30px;
       z-index: 10;
+      box-shadow: 0 2px 8px var(--theme-shadow);
     }
 
-    .profile-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
-      color: #1f2937;
-    }
-
-    .profile-info img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    /* New toggle button styling */
     .toggle-btn {
       border: none;
       background: transparent;
-      color: #2563eb;
+      color: var(--theme-main);
       font-size: 1.7rem;
       display: flex;
       align-items: center;
@@ -161,8 +159,24 @@
     }
 
     .toggle-btn:hover {
-      color: #1e3a8a;
+      color: var(--theme-dark);
       transform: scale(1.1);
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      color: var(--theme-text);
+    }
+
+    .profile-info img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--theme-main);
     }
 
     /* Responsive */
@@ -218,18 +232,19 @@
           <img src="img/profile.png" alt="Profile"> <?php echo htmlspecialchars($_SESSION['name']); ?>
         </div>
       </div>
-<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
-  const sidebar = document.getElementById('sidebar');
-  const toggleSidebar = document.getElementById('toggleSidebar');
 
-  toggleSidebar.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-      sidebar.classList.toggle('show');
-    } else {
-      sidebar.classList.toggle('collapsed');
-    }
-  });
-</script>
+      <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+
+        toggleSidebar.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
+          } else {
+            sidebar.classList.toggle('collapsed');
+          }
+        });
+      </script>
 </body>
 </html>
