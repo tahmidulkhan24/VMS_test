@@ -16,30 +16,31 @@
 </head>
 
 <body>
-    
+    <!-- 🌐 FINAL THEME NAVBAR -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex align-items-center">
-            <!--  Logo  -->
+            <!-- 🏠 Logo (Left Side) -->
             <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="img/logo2.png" alt="logo" class="me-2">
+                
             </a>
 
-            <!-- Mobile Menu Toggle -->
+            <!-- 📱 Mobile Menu Toggle -->
             <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-2"></i>
             </button>
 
-            <!-- Navbar Content -->
+            <!-- 📋 Navbar Content -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-               
+                <!-- 🔵 Center Navigation Buttons -->
                 <ul class="navbar-nav navbar-nav-center mb-2 mb-lg-0 align-items-center">
                     <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="my_booking.php" class="nav-link">My Booking</a></li>
                     <li class="nav-item"><a href="vehicle.php" class="nav-link">Vehicles</a></li>
                 </ul>
 
-                <!--  (User / Notification / Auth) -->
+                <!-- 🔐 Right Side (User / Notification / Auth) -->
                 <div class="d-flex align-items-center ms-lg-3 mt-2 mt-lg-0">
                     <?php if ($user_id): ?>
                         <!-- 🔔 Notification Dropdown -->

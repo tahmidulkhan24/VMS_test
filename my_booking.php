@@ -8,126 +8,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cholo - My Bookings</title>
 
-<?php
-    include('navbar.php');
-?>
+  <!-- CSS & Bootstrap Links -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="img/icon4.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<style>
-.bg-col {
-  background-color: #91f9ffff !important;
-  color: var(--theme-text) !important;
-}
-/* Card hover effect */
-.book-card {
-    transition: all 0.3s ease-in-out;
-}
 
-.book-card:hover {
-    transform: translateY(-8px);
-    border: 1px solid  #f8f8f8ff;
-    background: #dadcdfff ;
-}
-</style>
-<?php
-$user_id = $_SESSION['user_id'];
+<body>
+  <!-- ✅ Navbar properly placed inside <body> -->
+  <?php include('navbar.php'); ?>
 
-// --- User info ---
+  <?php
+  $user_id = $_SESSION['user_id'];
 
-$user_sql = "SELECT name, email, phone, address, role, status FROM user WHERE user_id = ?";
-$stmt = $db->prepare($user_sql);
-if (!$stmt) {
-    die("SQL prepare failed (user): " . $db->error);
-}
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$user_result = $stmt->get_result();
-$user = $user_result->fetch_assoc();
+  // --- User info ---
+  $user_sql = "SELECT name, email, phone, address, role, status FROM user WHERE user_id = ?";
+  $stmt = $db->prepare($user_sql);
+  if (!$stmt) {
+      die("SQL prepare failed (user): " . $db->error);
+  }
+  $stmt->bind_param("i", $user_id);
+  $stmt->execute();
+  $user_result = $stmt->get_result();
+  $user = $user_result->fetch_assoc();
 
+  // --- Booking history ---
+  $book_sql = "SELECT b.booking_id, v.model AS vehicle_name, b.start_date, b.end_date, b.purpose, b.status, b.approved_date
+              FROM bookings b
+              JOIN vehicle v ON b.vehicle_id = v.vehicle_id
+              WHERE b.user_id = ?
+              ORDER BY b.booking_id DESC";
+  $stmt = $db->prepare($book_sql);
+  if (!$stmt) {
+      die("SQL prepare failed (bookings): " . $db->error);
+  }
+  $stmt->bind_param("i", $user_id);
+  $stmt->execute();
+  $bookings = $stmt->get_result();
+  ?>
 
-// --- Booking history ---
-
-$book_sql = "SELECT b.booking_id, v.model AS vehicle_name, b.start_date, b.end_date, b.purpose, b.status, b.approved_date
-             FROM bookings b
-             JOIN vehicle v ON b.vehicle_id = v.vehicle_id
-             WHERE b.user_id = ?
-             ORDER BY b.booking_id DESC";
-$stmt = $db->prepare($book_sql);
-if (!$stmt) {
-    die("SQL prepare failed (bookings): " . $db->error);
-}
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$bookings = $stmt->get_result();
-
-?>
-<div class="container col-8 mt-4 text-center theme-bg theme-border shadow-lg rounded-3" 
-     style="background: #b0eefeff">
-    <h2 class="m-2">My Booking</h2>
-</div>
-<div class="container  text-center mt-2  text-align shadow-md rounded-3">
-       <div class="row">
-        <div class="card-box">
-            <h4 class="m-4">📊 Bookings Stats</h4>
-             <div class="row text-center mt-2">
-            <!-- Total Bookings -->
-            <div class="col-md-3 mt-3">
-                <div class="card shadow-lg  book-card rounded-3 p-3">
-                    <h6 class="fw-bold">Total Bookings</h6>
-                    <span class="badge fs-5 text-dark " style="background-color:  #8de1f9ff;"> 
-                        12
-                    </span>
-                </div>
-            </div>
-            <!-- ctive Bookings -->
-            <div class="col-md-3 mt-3">
-                <div class="card shadow-lg  book-card rounded-3 p-3">
-                    <h6 class="fw-bold">Active Bookings</h6>
-                    <span class="badge fs-5 text-dark" 
-                          style="background: #8de1f9ff">
-                        1
-                    </span>
-                </div>
-            </div>
-            <!-- Pending Requests -->
-            <div class="col-md-3 mt-3">
-                <div class="card shadow-lg  book-card rounded-3 p-3">
-                    <h6 class="fw-bold">Pending Requests</h6>
-                    <span class="badge fs-5 text-dark" 
-                          style="background:#8de1f9ff">
-                        2
-                    </span>
-                </div>
-            </div>
-            <!-- This Month -->
-            <div class="col-md-3 mt-3">
-                <div class="card shadow-lg  book-card rounded-3 p-3">
-                    <h6 class="fw-bold">This Month</h6>
-                    <span class="badge fs-5 text-dark" 
-                          style="background: #8de1f9ff;">
-                        5 trips
-                    </span>
-                </div>
-            </div>
-        </div>
+  <!-- 🌈 Booking Header -->
+  <div class="container mt-4">
+    <div class="booking-header shadow-sm">
+      <h2 class="fw-bold">📅 My Bookings</h2>
+      <p>Monitor your booking summary and active trip statistics.</p>
     </div>
-</div>
 
-<!--booking table-->
+    <!-- 🚘 Booking Stats Cards -->
+    <div class="row text-center booking-stats">
+      <div class="col-md-3 col-sm-6 mt-4">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
+          <div class="stat-number">12</div>
+          <h6>Total Bookings</h6>
+        </div>
+      </div>
 
-<?php
-   include('book_history.php');
-?>
+      <div class="col-md-3 col-sm-6 mt-4">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-car-front-fill"></i></div>
+          <div class="stat-number">1</div>
+          <h6>Active Bookings</h6>
+        </div>
+      </div>
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('msg') === 'booking_success') {
-  Swal.fire({
-    icon: 'success',
-    title: 'Booking Successful!',
-    text: 'Your vehicle booking was successful.',
-    confirmButtonColor: '#0d6efd',
-    timer: 2500,
-    showConfirmButton: false
-  });
-}
-</script>
+      <div class="col-md-3 col-sm-6 mt-4">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+          <div class="stat-number">2</div>
+          <h6>Pending Requests</h6>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mt-4">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-calendar-week"></i></div>
+          <div class="stat-number">5</div>
+          <h6>This Month</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🧾 Booking History Table (unchanged backend) -->
+  <?php include('book_history.php'); ?>
+
+  <!-- ✅ SweetAlert for success message -->
+  <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('msg') === 'booking_success') {
+    Swal.fire({
+      icon: 'success',
+      title: 'Booking Successful!',
+      text: 'Your vehicle booking was successful.',
+      confirmButtonColor: '#0d6efd',
+      timer: 2500,
+      showConfirmButton: false
+    });
+  }
+  </script>
+</body>
+</html>
