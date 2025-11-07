@@ -50,19 +50,65 @@
   $bookings = $stmt->get_result();
   ?>
 
-  <!-- 🌈 Booking Header -->
   <div class="container mt-4">
     <div class="booking-header shadow-sm">
-      <h2 class="fw-bold">📅 My Bookings</h2>
+      <h2 class="fw-bold">My Bookings</h2>
       <p>Monitor your booking summary and active trip statistics.</p>
     </div>
+     <?php
+        $sql = "SELECT 
+                  COUNT(b.booking_id) AS total,
+                  SUM(
+                    CASE
+                      WHEN b.status = 'Approved'
+                          AND CURDATE() BETWEEN b.start_date AND b.end_date
+                      THEN 1 ELSE 0
+                    END
+                  ) AS active,
+                  SUM(
+                    CASE WHEN b.status = 'Pending' THEN 1 ELSE 0 END
+                  ) AS pending,
+                  SUM(
+                    CASE
+                      WHEN MONTH(b.booking_date) = MONTH(CURDATE())
+                          AND YEAR(b.booking_date) = YEAR(CURDATE())
+                      THEN 1 ELSE 0
+                    END
+                  ) AS this_month
+                FROM bookings b
+                JOIN user u USING(user_id)
+                WHERE b.user_id = ?";
+
+        $stmt2 = $db->prepare($sql);
+        if (!$stmt2) {
+            die("Prepare failed (stats): " . $db->error);
+        }
+
+        $stmt2->bind_param("i", $user_id);
+
+        if (!$stmt2->execute()) {
+            $stmt2->close();
+            die("Execute failed (stats): " . $db->error);
+        }
+
+        $result = $stmt2->get_result();
+        $stats = $result ? $result->fetch_assoc() : null;
+        $stmt2->close();
+
+        $stats = $stats ?? [
+            'total' => 0,
+            'active' => 0,
+            'pending' => 0,
+            'this_month' => 0
+        ];
+        ?>
 
     <!-- 🚘 Booking Stats Cards -->
     <div class="row text-center booking-stats">
       <div class="col-md-3 col-sm-6 mt-4">
         <div class="stat-card">
           <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
-          <div class="stat-number">12</div>
+          <div class="stat-number"><?php echo $stats['total'] ?></div>
           <h6>Total Bookings</h6>
         </div>
       </div>
@@ -70,7 +116,7 @@
       <div class="col-md-3 col-sm-6 mt-4">
         <div class="stat-card">
           <div class="stat-icon"><i class="bi bi-car-front-fill"></i></div>
-          <div class="stat-number">1</div>
+          <div class="stat-number"><?php echo $stats['active'] ?></div>
           <h6>Active Bookings</h6>
         </div>
       </div>
@@ -78,7 +124,7 @@
       <div class="col-md-3 col-sm-6 mt-4">
         <div class="stat-card">
           <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
-          <div class="stat-number">2</div>
+          <div class="stat-number"><?php echo $stats['pending'] ?></div>
           <h6>Pending Requests</h6>
         </div>
       </div>
@@ -86,7 +132,7 @@
       <div class="col-md-3 col-sm-6 mt-4">
         <div class="stat-card">
           <div class="stat-icon"><i class="bi bi-calendar-week"></i></div>
-          <div class="stat-number">5</div>
+          <div class="stat-number"><?php echo $stats['this_month'] ?></div>
           <h6>This Month</h6>
         </div>
       </div>
