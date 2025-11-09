@@ -21,11 +21,10 @@ include('admin_auth.php');
      $db = connection(); 
   ?>
 
-  <!-- 🚗 Vehicle List Section -->
+  <!-- Vehicle List Section -->
   <div class="container mt-3">
     <div class="booking-header shadow-sm p-3 mb-3" style="padding: 1rem 1.5rem !important; border-radius: 12px;">
-      <h4 class="fw-bold mb-1">🚘 Vehicle List</h4>
-      <p class="mb-0" style="font-size: 0.95rem;">View, manage, and maintain all registered vehicles in the system.</p>
+      <h4 class="fw-bold mb-1"> Vehicle List</h4>
     </div>
 
     <div class="table-responsive shadow-sm rounded-4 booking-history-section" style="margin-top: -10px;">

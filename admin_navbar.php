@@ -205,7 +205,7 @@
   <div class="admin-wrapper">
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <img src="img/logo.png" alt="Cholo Logo">
+        <img src="img/logo2.png" alt="Cholo Logo">
       </div>
 
       <ul class="sidebar-menu">

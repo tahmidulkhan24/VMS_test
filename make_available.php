@@ -17,7 +17,7 @@ if (isset($_GET['vehicle_id'])) {
     
     $stmt2->bind_param("i", $veh_id);
     $stmt2->execute();
-    if ($stmt->affected_rows > 0 && $stmt2->affected_rows > 0) {
+    if ($stmt->affected_rows > 0 || $stmt2->affected_rows > 0) {
         header("Location: vehicle_list.php");
         exit;
     } else {

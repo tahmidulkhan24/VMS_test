@@ -31,7 +31,7 @@
               FROM bookings b
               JOIN user u ON b.user_id = u.user_id
               JOIN vehicle v ON b.vehicle_id = v.vehicle_id
-              ORDER BY b.booking_date ASC";
+              ORDER BY b.booking_date desc";
       $result = $db->query($sql);
   ?>
 
